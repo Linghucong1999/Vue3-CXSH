@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <!-- 登录页面 -->
-    <div class="container a-container" id="a-container">
+    <div class="container a-container" id="a-container" ref="aContainer">
       <el-form
         class="form"
         id="a-form"
@@ -32,20 +32,6 @@
             show-password
           ></el-input>
         </el-form-item>
-
-        <!-- <el-form-item class="form__link">
-          <el-checkbox-group v-model="loginForm.type">
-            <el-checkbox
-              label="记住密码"
-              name="type"
-              style="margin-right: 10px"
-            ></el-checkbox>
-          </el-checkbox-group>
-          <el-link type="primary" :underline="false" 
-            >忘记密码？</el-link
-          >
-        </el-form-item> -->
-
         <el-form-item>
           <el-button
             type="primary"
@@ -58,7 +44,7 @@
     </div>
 
     <!-- 注册选项暂时不用,但是还是先写好,免得到时候需要 -->
-    <div class="container b-container" id="b-container">
+    <div class="container b-container" id="b-container" ref="bContainer">
       <el-form
         class="form"
         id="b-form"
@@ -107,26 +93,36 @@
       </el-form>
     </div>
 
-    <div class="switch" id="switch-cnt">
-      <div class="switch__circle"></div>
-      <div class="switch__circle switch__circle--t"></div>
+    <div class="switch" id="switch-cnt" ref="switchCnt">
+      <div ref="switchCircle">
+        <div class="switch__circle"></div>
+        <div class="switch__circle switch__circle--t"></div>
+      </div>
 
-      <div class="switch__container" id="switch-c1">
+      <div class="switch__container" id="switch-c1" ref="switchC1">
         <h2 class="switch__title title">厨鲜生后台管理系统</h2>
         <p class="switch__description description">
           如果未曾登录过会自动注册一个账号,并不需要注册
         </p>
-        <button class="switch__button button switch-btn" @click="changForm">
+        <button
+          class="switch__button button switch-btn"
+          @click="changForm"
+          ref="switchBtn"
+        >
           注册
         </button>
       </div>
 
-      <div class="switch__container is-hidden" id="switch-c2">
+      <div class="switch__container is-hidden" id="switch-c2" ref="switchC2">
         <h2 class="switch__title title">VUE3+Element-plus</h2>
         <p class="switch__description description">
           不商用,注册页面只是摆设,说不定以后会用到,注册个大概页面
         </p>
-        <button class="switch__button button switch-btn" @click="changForm">
+        <button
+          class="switch__button button switch-btn"
+          @click="changForm"
+          ref="switchBtn"
+        >
           登录
         </button>
       </div>
@@ -139,13 +135,46 @@ import { User, Lock, Iphone } from "@element-plus/icons-vue";
 import { login, getAdminInfo } from "@/api/getData.js";
 // import {login} from '@/api/getDataAxios.js';
 import { mapActions, mapState } from "vuex";
+import { ref } from "@vue/reactivity";
 
 export default {
   setup() {
+    const switchCnt = ref(null);
+    const switchC1 = ref(null);
+    const switchC2 = ref(null);
+    const switchCircle = ref([]);
+    const switchBtn = ref([]);
+    const aContainer = ref(null);
+    const bContainer = ref(null);
+
+    const changForm = () => {
+      switchCnt.value.classList.add("is-gx");
+      setTimeout(() => {
+        switchCnt.value.classList.remove("is-gx");
+      });
+
+      switchCnt.value.classList.toggle("is-txr");
+      switchCircle.value.classList.toggle("is-txr");
+
+      switchC1.value.classList.toggle("is-hidden");
+      switchC2.value.classList.toggle("is-hidden");
+      aContainer.value.classList.toggle("is-txl");
+      bContainer.value.classList.toggle("is-txl");
+      bContainer.value.classList.toggle("is-z200");
+    };
+
     return {
       User,
       Lock,
       Iphone,
+      switchCnt,
+      switchC1,
+      switchC2,
+      switchCircle,
+      switchBtn,
+      aContainer,
+      bContainer,
+      changForm,
     };
   },
   data() {
@@ -161,14 +190,6 @@ export default {
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
-      showLogin: false,
-      switchCtn: null,
-      switchC1: null,
-      switchC2: null,
-      switchCircle: null,
-      switchBtn: null,
-      aContainer: null,
-      bContainer: null,
     };
   },
   computed: {
@@ -207,36 +228,8 @@ export default {
         }
       });
     },
-    mainF() {
-      this.switchCtn = document.querySelector("#switch-cnt");
-      this.switchC1 = document.querySelector("#switch-c1");
-      this.switchC2 = document.querySelector("#switch-c2");
-      this.switchCircle = document.querySelectorAll(".switch__circle");
-      this.switchBtn = document.querySelectorAll(".switch-btn");
-      this.aContainer = document.querySelector(".a-container");
-      this.bContainer = document.querySelector(".b-container");
-    },
-    changForm() {
-      this.switchCtn.classList.add("is-gx");
-      setTimeout(() => {
-        this.switchCtn.classList.remove("is-gx");
-      });
-
-      this.switchCtn.classList.toggle("is-txr");
-      this.switchCircle[0].classList.toggle("is-txr");
-      this.switchCircle[1].classList.toggle("is-txr");
-
-      this.switchC1.classList.toggle("is-hidden");
-      this.switchC2.classList.toggle("is-hidden");
-      this.aContainer.classList.toggle("is-txl");
-      this.bContainer.classList.toggle("is-txl");
-      this.bContainer.classList.toggle("is-z200");
-    },
   },
   mounted() {
-    this.$nextTick(() => {
-      this.mainF();
-    });
     if (!this.adminInfo.id) {
       this.getAdminData();
     }
@@ -246,10 +239,10 @@ export default {
     adminInfo: function (newValue) {
       if (newValue.id) {
         this.$message({
-          type:'success',
-          message:'检测到您之前已经登录过,将自动登录'
+          type: "success",
+          message: "检测到您之前已经登录过,将自动登录",
         });
-        this.$router.push('manage');
+        this.$router.push("manage");
       }
     },
   },
