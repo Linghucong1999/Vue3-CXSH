@@ -24,3 +24,5 @@ npm run dev
 ```sh
 npm run build
 ```
+### 根目录下的public提交说明错误
+public公共文件，导航图标
