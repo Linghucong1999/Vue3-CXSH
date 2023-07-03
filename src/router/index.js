@@ -18,6 +18,10 @@ const router = createRouter({
           component: () => import('@/page/addShop.vue'),
           meta: ['添加数据', '添加商铺']
         }, {
+          path: '/addGoods',
+          component: () => import("@/page/addGoods.vue"),
+          meta: ['添加数据', '添加商品']
+        }, {
           path: '/userList',
           component: () => import('@/page/userList.vue'),
           meta: ['数据管理', '用户列表']
@@ -38,7 +42,7 @@ const router = createRouter({
           component: () => import('@/page/adminList.vue'),
           meta: ['数据管理', '管理员列表']
         }, {
-          path: 'visitor',
+          path: '/visitor',
           component: () => import('@/page/visitor.vue'),
           meta: ['图表', '用户分布']
         }, {
