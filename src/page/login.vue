@@ -249,6 +249,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+
 $bg: #edf2f0;
 
 $neu-1: #ecf0f3;
@@ -266,7 +267,9 @@ $transition: 1.25s;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
+
 
 body {
   width: 100%;
@@ -284,7 +287,7 @@ body {
   min-width: 1000px;
   height: 600px;
   min-height: 600px;
-  padding: 25px;
+  margin:5vh 17vw;
   background-color: $neu-1;
   box-shadow: 10px 10px 10px $neu-2, -10px -10px 10px $white;
   border-radius: 12px;
