@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import { ElMessage } from 'element-plus';
-import { getAdminInfo } from '../api/getDataAxios.js';
+// import { getAdminInfo } from '../api/getDataAxios.js';
+import { getAdminInfo } from '../api/getData';
 
 const ERR = '获取用户信息失败';
 
@@ -26,7 +27,7 @@ const actions = {
                 throw new Error(res.type);
             }
         } catch (err) {
-            ElMessage.error(ERR);
+            // ElMessage.error(ERR);
         }
     }
 }
