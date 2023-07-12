@@ -5,7 +5,7 @@
     </div>
 
     <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
-      <nav-head></nav-head>
+      <nav-head @clickCollapse="showCollapse"></nav-head>
       <div class="wrapper">
         <keep-alive>
           <router-view></router-view>
@@ -31,6 +31,11 @@ export default {
     return {
       isCollapse: false,
     };
+  },
+  methods: {
+    showCollapse(isShow) {
+      this.isCollapse = isShow;
+    },
   },
 };
 </script>
@@ -63,7 +68,7 @@ export default {
 
     //合并
     &.fold {
-     margin-left: 64px;
+      margin-left: 64px;
     }
 
     //展开
