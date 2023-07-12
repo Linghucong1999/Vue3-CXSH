@@ -133,7 +133,6 @@
 <script>
 import { User, Lock, Iphone } from "@element-plus/icons-vue";
 import { login, getAdminInfo } from "@/api/getData.js";
-// import {login} from '@/api/getDataAxios.js';
 import { mapActions, mapState } from "vuex";
 import { ref } from "@vue/reactivity";
 
@@ -192,11 +191,11 @@ export default {
       },
     };
   },
-  computed: {
-    ...mapState(["adminInfo"]),
-  },
+  // computed: {
+  //   ...mapState(["adminInfo"]),
+  // },
   methods: {
-    ...mapActions(["getAdminData"]),
+    // ...mapActions(["getAdminData"]),
     async submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
@@ -228,16 +227,13 @@ export default {
         }
       });
     },
-  },
-  mounted() {
-    if (!this.adminInfo.id) {
-      this.getAdminData();
-    }
-  },
-  watch: {
-    //监听adminInfo的改变,如果admin发生变化就执行这个回调函数
-    adminInfo: function (newValue) {
-      if (newValue.id) {
+    checkLocalStroe() {
+      const adminDatas = localStorage.getItem("adminData");
+      const adminInfo = JSON.parse(adminDatas);
+      console.log(adminInfo);
+      if (adminInfo.expiration && Date.now() > adminInfo.expiration) {
+        localStorage.removeItem("adminData");
+      } else {
         this.$message({
           type: "success",
           message: "检测到您之前已经登录过,将自动登录",
@@ -246,10 +242,12 @@ export default {
       }
     },
   },
+  mounted() {
+    this.checkLocalStroe();
+  },
 };
 </script>
 <style scoped lang="scss">
-
 $bg: #edf2f0;
 
 $neu-1: #ecf0f3;
@@ -270,7 +268,6 @@ $transition: 1.25s;
   user-select: none;
 }
 
-
 body {
   width: 100%;
   height: 100vh;
@@ -287,7 +284,7 @@ body {
   min-width: 1000px;
   height: 600px;
   min-height: 600px;
-  margin:5vh 17vw;
+  margin: 5vh 17vw;
   background-color: $neu-1;
   box-shadow: 10px 10px 10px $neu-2, -10px -10px 10px $white;
   border-radius: 12px;
