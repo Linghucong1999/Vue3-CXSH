@@ -1,10 +1,11 @@
 <template>
   <div class="head-container">
-    <el-icon class="head-icon">
+    <el-icon class="head-icon" @click="toggle">
       <Expand v-show="isCollapse === true"></Expand>
       <Fold v-show="isCollapse === false"></Fold>
     </el-icon>
-    <el-icon class="head-icon">
+
+    <el-icon class="head-icon" @click="refresh">
       <RefreshRight></RefreshRight>
     </el-icon>
     <el-breadcrumb separator="/" class="breadlist">
@@ -14,7 +15,7 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-dropdown class="head-right">
+    <el-dropdown class="head-right" @command="handleCommand">
       <div class="user">
         <span class="avatar avatar-samll">
           <img
@@ -38,7 +39,7 @@
 
 <script>
 import env from "@/config/env.js";
-import { singout } from "@/api/getData.js";
+import { singout, getAdminInfo } from "@/api/getData.js";
 import { mapActions, mapState } from "vuex";
 import { Expand, Fold, RefreshRight } from "@element-plus/icons-vue";
 
@@ -47,6 +48,10 @@ export default {
     return {
       baseImgPath: env.baseImgPath,
       isCollapse: false,
+      adminInfo: {
+        user_name: "Admin",
+        avatar: "default.jpg",
+      },
     };
   },
   components: {
@@ -55,14 +60,68 @@ export default {
     RefreshRight,
   },
   methods: {
-    ...mapActions(["getAdminData"]),
+    async handleCommand(command) {
+      if (command == "home") {
+        this.$router.push("/manage");
+      } else if (command == "singout") {
+        try {
+          const res = await singout();
+          if (res.status == 1) {
+            localStorage.removeItem("adminData");
+            this.$message({
+              type: "success",
+              message: "退出成功",
+            });
+            this.$router.push("/");
+          } else {
+            this.$message({
+              type: "error",
+              message: res.message,
+            });
+          }
+        } catch (err) {
+          this.$message({
+            type: "error",
+            message: "退出失败请重试",
+          });
+        }
+      }
+    },
+
+    toggle() {
+      this.isCollapse = !this.isCollapse;
+      this.$emit("clickCollapse", this.isCollapse);
+    },
+
+    refresh() {
+      window.location.reload();
+    },
+    async getAdminDatas() {
+      const res = await getAdminInfo();
+      if (!res.data) {
+        this.$message({
+          type: "error",
+          message: "获取用户信息失败，请重新登录！",
+        });
+        this.$router.push("/");
+      } else {
+        this.adminInfo = res.data;
+        const time = Date.now() + 12 * 60 * 60 * 1000;
+        this.adminInfo["expiration"] = time;
+
+        localStorage.setItem("adminData", JSON.stringify(this.adminInfo));
+      }
+    },
   },
-  computed: {
-    ...mapState(["adminInfo"]),
-  },
-  created() {
-    if (!this.adminInfo.id) {
-      this.getAdminData();
+  beforeMount() {
+    if (
+      localStorage.getItem("adminData") &&
+      Date.now() <= JSON.parse(localStorage.getItem("adminData")).expiration
+    ) {
+      this.adminInfo = JSON.parse(localStorage.getItem("adminData"));
+    } else {
+      localStorage.removeItem("adminData");
+      this.getAdminDatas();
     }
   },
 };
