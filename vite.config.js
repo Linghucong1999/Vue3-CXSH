@@ -25,6 +25,10 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
       }
     }
-  }
-  
+  },
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector'
+  ],
+
 })
