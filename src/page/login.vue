@@ -94,10 +94,8 @@
     </div>
 
     <div class="switch" id="switch-cnt" ref="switchCnt">
-      <div ref="switchCircle">
-        <div class="switch__circle"></div>
-        <div class="switch__circle switch__circle--t"></div>
-      </div>
+      <div class="switch__circle" ref="switchCircleOne"></div>
+      <div class="switch__circle switch__circle--t" ref="switchCircleTwo"></div>
 
       <div class="switch__container" id="switch-c1" ref="switchC1">
         <h2 class="switch__title title">厨鲜生后台管理系统</h2>
@@ -141,7 +139,9 @@ export default {
     const switchCnt = ref(null);
     const switchC1 = ref(null);
     const switchC2 = ref(null);
-    const switchCircle = ref([]);
+    // const switchCircle = ref(null);
+    const switchCircleOne = ref(null);
+    const switchCircleTwo = ref(null);
     const switchBtn = ref([]);
     const aContainer = ref(null);
     const bContainer = ref(null);
@@ -153,7 +153,8 @@ export default {
       });
 
       switchCnt.value.classList.toggle("is-txr");
-      switchCircle.value.classList.toggle("is-txr");
+      switchCircleOne.value.classList.toggle("is-txr");
+      switchCircleTwo.value.classList.toggle("is-txr");
 
       switchC1.value.classList.toggle("is-hidden");
       switchC2.value.classList.toggle("is-hidden");
@@ -169,7 +170,8 @@ export default {
       switchCnt,
       switchC1,
       switchC2,
-      switchCircle,
+      switchCircleOne,
+      switchCircleTwo,
       switchBtn,
       aContainer,
       bContainer,
@@ -191,11 +193,8 @@ export default {
       },
     };
   },
-  // computed: {
-  //   ...mapState(["adminInfo"]),
-  // },
+
   methods: {
-    // ...mapActions(["getAdminData"]),
     async submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
@@ -230,7 +229,6 @@ export default {
     checkLocalStroe() {
       const adminDatas = localStorage.getItem("adminData");
       const adminInfo = JSON.parse(adminDatas);
-      console.log(adminInfo);
       if (adminInfo.expiration && Date.now() > adminInfo.expiration) {
         localStorage.removeItem("adminData");
       } else {
@@ -243,7 +241,9 @@ export default {
     },
   },
   mounted() {
-    this.checkLocalStroe();
+    if (localStorage.getItem("adminData")) {
+      this.checkLocalStroe();
+    }
   },
 };
 </script>
