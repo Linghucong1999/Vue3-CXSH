@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,6 +14,10 @@ const router = createRouter({
           path: '',
           component: () => import('@/page/home.vue'),
           meta: []
+        }, {
+          path: '/updata',
+          component: () => import('@/page/updata.vue'),
+          meta: ['更新']
         }, {
           path: '/addShop',
           component: () => import('@/page/addShop.vue'),
