@@ -66,7 +66,7 @@ export default {
       } else if (command == "singout") {
         try {
           const res = await singout();
-          if (res.status == 1) {
+          if (res.status === 1) {
             localStorage.removeItem("adminData");
             this.$message({
               type: "success",

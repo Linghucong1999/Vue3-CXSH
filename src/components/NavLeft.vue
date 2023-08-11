@@ -15,7 +15,7 @@
           <img src="../assets/logo.svg" alt="logo" />
         </el-icon>
         <template #title>
-          <span class="logo_desc">Vue Tree</span>
+          <span class="logo_desc">厨鲜生后台</span>
         </template>
       </el-menu-item>
 
