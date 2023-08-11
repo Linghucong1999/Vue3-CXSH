@@ -102,6 +102,19 @@ export default {
       listSkeleton: true, //列表图骨架加载
     };
   },
+  watch: {
+    sevenDate: {
+      immediate: true,
+      handler(newval) {
+        let that = this;
+        newval.forEach((item, index) => {
+          if (that.isAllZero(item)) {
+            that.sevenDate[index] = that.getRandomNumbers();
+          }
+        });
+      },
+    },
+  },
   mounted() {
     this.initData();
   },
@@ -157,6 +170,13 @@ export default {
       } else {
         this.render("line", false);
       }
+    },
+    //当数据传过来没有数据的时候我们随机显示先
+    isAllZero(arr) {
+      return arr.every((subArr) => subArr === 0);
+    },
+    getRandomNumbers() {
+      return Array.from({ length: 7 }, () => Math.floor(Math.random() * 1000));
     },
     render(type, gap) {
       this.chartOptions = {
@@ -458,11 +478,11 @@ export default {
 }
 
 .el-card :deep(.el-card__header) {
-    border-bottom: none;
-    padding: 0;
+  border-bottom: none;
+  padding: 0;
 }
 .demo-date-picker {
-    display: inline-block;
-    margin-left: 20px;
+  display: inline-block;
+  margin-left: 20px;
 }
 </style>
