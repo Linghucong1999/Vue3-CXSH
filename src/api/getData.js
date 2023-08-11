@@ -13,10 +13,27 @@ export const login = data => fetch('/admin/login', data, 'post');
 export const singout = () => fetch('/admin/singout');
 
 /**
- * 获取用户信息
+ * 获取管理员信息
  */
 
 export const getAdminInfo = () => fetch('/admin/info');
+
+/**
+ * 某一天的管理员注册数量
+ */
+
+export const adminDayCount = data => fetch('/statis/admin/' + data + '/count');
+
+/**
+ * 管理员列表
+ */
+export const adminList = data => fetch('/admin/all', data);
+
+/**
+ * 管理员数量
+ */
+
+export const adminCount = () => fetch('/admin/count');
 
 /**
  * api请求量
@@ -42,24 +59,81 @@ export const apiAllRecord = () => fetch('/statis/api/all');
 export const userCount = data => fetch('/statis/user/' + data + '/count');
 
 /**
+ * 获取用户数量
+ */
+
+export const getUserCount = () => fetch('/v1//users/count');
+
+/**
+ *  获取用户所在城市
+ */
+
+export const getUserCity = () => fetch('/v1/user/city/count')
+
+/**
  * 某一天订单数量
  */
 
 export const orderCount = data => fetch('/statis/order/' + data + '/count');
 
 /**
- * 某一天的管理员注册数量
+ * 获取商铺列表
  */
 
-export const adminDayCount = data => fetch('/statis/admin/' + data + '/count');
+export const shopList = (
+    latitude,
+    longitude,
+    offset,
+    restaurant_category_id = '',
+    restaurant_category_ids = [],
+    order_by = '',
+    delivery_mode = '',
+    support_ids = []
+) => {
+    let supportStr = '';
+    support_ids.forEach(item => {
+        if (item.status) {
+            supportStr += '&support_ids[]=' + item.restaurant_category_id
+        }
+    })
+
+    const data = {
+        latitude,
+        longitude,
+        offset,
+        limit: 20,
+        keyword: '',
+        'extras[]': 'activities',
+        restaurant_category_id,
+        restaurant_category_ids: restaurant_category_ids,
+        order_by,
+        delivery_mode: delivery_mode + supportStr
+    }
+    return fetch('/shopping/restaurants', data);
+}
+
 
 /**
- * 管理员列表
+ * 搜索关键字数据量
  */
-export const adminList = data => fetch('/admin/all', data);
+
+export const searchTatol = data => fetch('/v2/categorydatalist/search', data);
 
 /**
- * 管理员数量
+ * 搜索
  */
 
-export const adminCount = () => fetch('/admin/count');
+export const addSearchFodd = data => fetch('/v2/categorydatalist', data);
+
+
+/**
+ * 获取省市区列表
+ */
+
+export const getFindCity = () => fetch('/findcity/citydistrict');
+
+/**
+ * 获取下级市
+ */
+
+export const getLowerCity = data => fetch('/findcity/citychilder', data)
