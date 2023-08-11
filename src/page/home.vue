@@ -46,6 +46,15 @@
     <el-row>
       <anal-view :sevenDate="sevenDate" :sevenDay="sevenDay"></anal-view>
     </el-row>
+
+    <el-row :gutter="24" style="margin-top: 20px">
+      <el-col :span="12">
+        <keyword-view></keyword-view>
+      </el-col>
+      <el-col :span="12">
+        <pie-view :pieDate="pieDate" :allUserCount="allUserCount"></pie-view>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -54,6 +63,8 @@ import UserCount from "../components/card/components/UserCount.vue";
 import AdminCount from "../components/card/components/AdminCount.vue";
 import OrderCount from "../components/card/components/OrderCount.vue";
 import AnalView from "../components/charts/AnalView.vue";
+import KeywordView from "../components/charts/KeywordView.vue";
+import PieView from "../components/charts/PieView.vue";
 import ApiCount from "../components/card/components/ApiCount.vue";
 import { dayjs } from "element-plus";
 import {
@@ -75,6 +86,8 @@ export default {
     OrderCount,
     ApiCount,
     AnalView,
+    KeywordView,
+    PieView,
   },
   data() {
     return {

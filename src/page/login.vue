@@ -131,7 +131,6 @@
 <script>
 import { User, Lock, Iphone } from "@element-plus/icons-vue";
 import { login, getAdminInfo } from "@/api/getData.js";
-import { mapActions, mapState } from "vuex";
 import { ref } from "@vue/reactivity";
 
 export default {
@@ -139,7 +138,6 @@ export default {
     const switchCnt = ref(null);
     const switchC1 = ref(null);
     const switchC2 = ref(null);
-    // const switchCircle = ref(null);
     const switchCircleOne = ref(null);
     const switchCircleTwo = ref(null);
     const switchBtn = ref([]);
