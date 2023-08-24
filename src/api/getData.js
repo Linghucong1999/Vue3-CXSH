@@ -71,6 +71,18 @@ export const getUserCount = () => fetch('/v1//users/count');
 export const getUserCity = () => fetch('/v1/user/city/count')
 
 /**
+ * 获取用户信息
+ */
+
+export const getUserList = data => fetch('/v1/users/list', data);
+
+/** 
+ * 根据时间段,地区,用户名筛选用户
+*/
+
+export const conditionGetUser = data => fetch('/v1/user/condition/userlist', data);
+
+/**
  * 某一天订单数量
  */
 
