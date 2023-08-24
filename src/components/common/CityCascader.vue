@@ -88,6 +88,9 @@ export default {
     cityDataFrom(value) {
       //对列表进行筛选显示，后续写，API没有写完
     },
+    onReset() {
+      this.cityData = [];
+    },
   },
   mounted() {
     this.initData();
