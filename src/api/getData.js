@@ -36,6 +36,12 @@ export const adminList = data => fetch('/admin/all', data);
 export const adminCount = () => fetch('/admin/count');
 
 /**
+ * 获取特定的管理员
+ */
+
+export const conditionGetAdmin = data => fetch('/admin/conditionget/admin', data);
+
+/**
  * api请求量
  */
 export const apiCount = data => fetch('/statis/api/' + data + '/count');
@@ -89,6 +95,12 @@ export const conditionGetUser = data => fetch('/v1/user/condition/userlist', dat
 export const orderCount = data => fetch('/statis/order/' + data + '/count');
 
 /**
+ * 添加商铺
+ */
+
+export const addShop = data => fetch('/shopping/addshop', data, 'POST');
+
+/**
  * 获取商铺列表
  */
 
@@ -125,6 +137,15 @@ export const shopList = (
 }
 
 
+
+/**
+ * 
+ * 获取餐馆列表
+ */
+
+export const getRestaurants = data => fetch('/shopping/restaurants', data);
+
+
 /**
  * 搜索关键字数据量
  */
@@ -137,6 +158,17 @@ export const searchTatol = data => fetch('/v2/categorydatalist/search', data);
 
 export const addSearchFodd = data => fetch('/v2/categorydatalist', data);
 
+/**
+ * 
+ * 获取搜索地址
+ */
+
+export const searchplace = (cityid, value) => fetch('/v1/pois', {
+    type: 'search',
+    city_id: cityid,
+    keyword: value
+})
+
 
 /**
  * 获取省市区列表
@@ -148,4 +180,10 @@ export const getFindCity = () => fetch('/findcity/citydistrict');
  * 获取下级市
  */
 
-export const getLowerCity = data => fetch('/findcity/citychilder', data)
+export const getLowerCity = data => fetch('/findcity/citychilder', data);
+
+
+/**
+ * 获取定位城市
+ */
+export const cityGuess = data => fetch('/v1/cities', { type: data });
