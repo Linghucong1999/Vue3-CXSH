@@ -10,11 +10,17 @@ const state = {
         user_name: 'Admin',
         avatar: 'default.jpg'
     }
+    
 }
 
 const mutations = {
     saveAdminInfo(state, adminInfo) {
         state.adminInfo = adminInfo;
+        // console.log(state.adminInfo);
+    },
+    clearAdminInfo(state) {
+        state.adminInfo = {};
+        // console.log(state.adminInfo);
     }
 }
 const actions = {
