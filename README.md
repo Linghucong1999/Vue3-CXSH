@@ -19,10 +19,7 @@ npm run dev
 ### 根目录下的public提交说明错误
 public公共文件，导航图标
 
-## 模块化设计
-**Navhead:**(Head and footer not listed)
 
-![侧边导航](/public/NavLeft.png)!
 
 ## &#x1F3A6;工具类
 新增了一些公用方法，用于处理时间，千百分位数字的处理，位于`utils`
@@ -36,3 +33,63 @@ public公共文件，导航图标
 ## &#x1F34E; 这次我对element-plus的级联选择器二次封装
 
 在大多数对```element-plus```的二次封装的城市选择器，大多都是臃肿不堪，他们把省级市等全封装在一个Json表中，这无疑当`npm i`的时候，为文件增加了许多负担，而我在后端封装好响应的接口，因为使用的是腾讯地图API，一下子就放回给前端6000条数据，非常庞大，前端如何处理才会让数据渲染的时候而不造成页面卡顿；
+
+## &#x1F34E; 新增输入字段可以输出相对应的地址（仅限所在IP区域的地址出现）
+前端输入相关的关键字，后端进行处理请求，然后向腾讯API进行请求，获取相对应的地址数据，由服务器放回给前端，前端可以对数据进行清洗再显示给用户知晓，也可以不清洗，直接返回；
+
+## &#x1F34E; 对于提交From表单的验证规则，用户未填写，前端如何处理？
+
+### 前言
+我们在使用`element-plus`的`Form`表单验证的时候，虽然已经定义过了`rules`,然后我们通过规则验证去判断用户是否填了必填选项，然后我们进行一定的逻辑处理，相关的的逻辑处理都是提示。但是如果必填选项太多了，老是跳提示框真的很烦，让用户体验感非常差，所以就有了另一种解法——**表单跳转**
+
+### 正言
+```Vue3
+          <el-form-item label="店铺名称" prop="name" id="name">
+            <el-input v-model="formData.name"></el-input>
+          </el-form-item>
+          <el-form-item label="详细地址" prop="address" id="address">
+            <el-autocomplete v-model="formData.address"></el-autocomplete>
+            <span>当前城市:{{ city.name }}</span>
+          </el-form-item>
+          <el-form-item label="联系电话" prop="phone" id="phone">
+            <el-input v-model.number="formData.phone" maxlength="11"></el-input>
+          </el-form-item
+          
+          <el-form-item class="button_submit">
+            <el-button type="primary" @click="submitForm('formData')"
+              >立即创建</el-button
+            >
+          </el-form-item>
+```
+
+开始定义方法（*先明确我这里的表单的ref="formData"*）
+```JavaScript
+submitForm(formName) {
+      const form=this.$refs[formName];
+      const valid = form.validate();
+      valid.then().catch(err=>{
+        let elementId=[];
+        for(let value of Object.entries(err)){
+          elementId.push(form.$el.querySelector(`#${value[0]}`));
+        }
+        elementId[0].scrollIntoView({behavior:'smooth',block:'start'});
+      })
+    }
+```
+```JavaScript
+const form=this.$refs[formName]  //简单抽离
+```
+下面拿到Promise状态，如果必填选项没有填写，就好reject状态
+```JavaScript
+const valid = form.validate(); //简单抽离
+```
+捕捉到的err就是规则定义中的字段，我们只需要拿到其中的字段就可以通过`querySelector`拿到其中的`Element`，然后我们使用`scrollIntoView`进行跳转，就可以定位到了未填写的字段了
+```JavaScript
+valid.then().catch(err=>{ 
+    let elementId=[];  
+    for(let value of Object.entries(err)){
+        elementId.push(form.$el.querySelector(`#${value[0]}`)); 
+    } 
+    elementId[0].scrollIntoView({behavior:'smooth',block:'start'});
+})
+```
