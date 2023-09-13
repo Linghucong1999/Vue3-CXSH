@@ -101,6 +101,12 @@ export const orderCount = data => fetch('/statis/order/' + data + '/count');
 export const addShop = data => fetch('/shopping/addshop', data, 'POST');
 
 /**
+ * 删除图片、头像
+ */
+
+export const deleteImg = data => fetch('/v1/delete/img', data);
+
+/**
  * 获取商铺列表
  */
 
