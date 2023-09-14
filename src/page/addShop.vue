@@ -39,10 +39,11 @@
           </el-form-item>
           <el-form-item label="店铺分类">
             <el-cascader
+              placeholder="可搜索你的分类"
               :options="categoryOptions"
               v-model="selectedCategory"
-              change-on-select
               :props="{ expandTrigger: 'hover' }"
+              filterable
             ></el-cascader>
           </el-form-item>
           <el-form-item label="店铺特点" style="white-space: nowrap">
@@ -199,7 +200,11 @@
             <el-tag type="info"
               >满减优惠(满30减5,满60减15)是必有选项,不用另选,如果商户有自己的满减的优惠,可自己填写</el-tag>
           </el-form-item> -->
-          <el-table :data="activities" :row-class-name="tbaleRowClassName">
+          <el-table
+            :data="activities"
+            style="min-width: 600px; margin-bottom: 20px"
+            :stripe="true"
+          >
             <el-table-column
               label="活动标题"
               prop="icon_name"
@@ -228,7 +233,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-form-item class="button_submit">
+          <el-form-item class="button_submit" label-width="250">
             <el-button type="primary" @click="submitForm('formData')"
               >立即创建</el-button
             >
@@ -239,7 +244,13 @@
   </el-card>
 </template>
 <script>
-import { cityGuess, addShop, searchplace, deleteImg } from "../api/getData.js";
+import {
+  cityGuess,
+  addShop,
+  searchplace,
+  deleteImg,
+  foodCategory,
+} from "../api/getData.js";
 import env from "../config/env.js";
 import { Plus, ZoomIn } from "@element-plus/icons-vue";
 import { ElMessage, genFileId } from "element-plus";
@@ -294,7 +305,7 @@ export default {
         ],
       },
       categoryOptions: [],
-      selectedCategory: ["快餐便当", "简餐"],
+      selectedCategory: [],
       baseUrl: env.baseUrl,
       baseImgPath: env.baseImgPath,
       activityValue: "满减优惠",
@@ -332,7 +343,18 @@ export default {
     async initData() {
       try {
         this.city = await cityGuess("guess");
-        // const categories=
+        const categories = await foodCategory();
+        this.categoryOptions = categories.map((item) => {
+          const children = item.sub_categories.slice(1).map((subitem) => ({
+            value: subitem.name,
+            label: subitem.name,
+          }));
+          return {
+            value: item.name,
+            label: item.name,
+            children: children,
+          };
+        });
       } catch (err) {
         console.log(err);
       }
@@ -473,10 +495,10 @@ export default {
                 description: value,
               };
               break;
-            case "进店领券":
+            case "进店领优惠劵":
               newObj = {
                 icon_name: "领",
-                name: "进店领券",
+                name: "进店领优惠劵",
                 description: value,
               };
               break;
@@ -496,26 +518,79 @@ export default {
           ElMessage.warning("取消输入");
         });
     },
-    tbaleRowClassName(row, index) {},
     handleDelete(index) {
       this.activities.splice(index, 1);
       // console.log(this.activities);
     },
-    async submitForm(formName) {
-      const form=this.$refs[formName]
+    submitForm(formName) {
+      const form = this.$refs[formName];
       const valid = form.validate();
-      valid.then(
-        console.log(this.formData)
-      ).catch(err=>{
-        let elementId=[];
-        for(let value of Object.entries(err)){
-          elementId.push(form.$el.querySelector(`#${value[0]}`));
-        }
-        elementId[0].scrollIntoView({behavior:'smooth',block:'start'});
-      })
+      valid
+        .then(async () => {
+          Object.assign(
+            this.formData,
+            { activities: this.activities },
+            { category: this.selectedCategory.join("/") }
+          );
+          let result = await addShop(this.formData);
+          if (result.status === 1) {
+            ElMessage.success("添加成功!");
+            this.formData = {
+              name: "",
+              address: "",
+              latitude: "",
+              longitude: "",
+              description: "",
+              phone: "",
+              promotion_info: "", //高峰期标语
+              float_delivery_fee: 5, //配送费
+              float_minimum_order_amount: 20, //起配价
+              is_premium: true, //品牌保证
+              delivery_mode: true, //配送方式，默认官方配送方式
+              new: true,
+              bao: true,
+              zhun: true,
+              piao: true,
+              startTime: "",
+              endTime: "",
+              image_path: "", //店铺头像
+              business_license_image: "", //营业资格证照
+              catering_service_license_image: "", //食品安全
+            };
+            this.selectedCategory = [];
+            this.activities = [
+              {
+                icon_name: "减",
+                name: "满减优惠",
+                description: "满30减5，满60减15",
+              },
+            ];
+            this.dialogImageUrl = "";
+          } else if (result.status === 0) {
+            ElMessage.warning(result.message);
+          }
+        })
+        .catch((err) => {
+          let elementId = [];
+          for (let value of Object.entries(err)) {
+            elementId.push(form.$el.querySelector(`#${value[0]}`));
+          }
+          elementId[0].scrollIntoView({ behavior: "smooth", block: "start" });
+        });
     },
   },
 };
 </script>
 <style scoped lang="scss">
+.button_submit {
+  margin-top: 50px;
+  text-align: center;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #20a0ff;
+}
+.avatar-uploader-icon{
+  font-size: 28px;
+  color: #8c939d;
+}
 </style>
