@@ -151,6 +151,12 @@ export const shopList = (
 
 export const getRestaurants = data => fetch('/shopping/restaurants', data);
 
+/**
+ * 获取食品种类
+ */
+
+export const foodCategory=()=>fetch('/shopping/v2/restaurant/category');
+
 
 /**
  * 搜索关键字数据量
