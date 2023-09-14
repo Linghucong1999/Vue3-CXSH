@@ -1,3 +1,4 @@
+[toc]
 # vue3-elm-admin
 
 厨生鲜后台管理系统
@@ -92,4 +93,37 @@ valid.then().catch(err=>{
     } 
     elementId[0].scrollIntoView({behavior:'smooth',block:'start'});
 })
+```
+
+## &#x1F34E; 对原生的Fetch封装成类axios
+哈哈哈哈，标题够吓人的了，其实就是简单的封装判断用什么请求头而已；
+### &#x26A1;&#xFE0F; axios简介
+&#8195;&#8195;`Axios`是基于`XMLHttpRequest`的一个库。它可以用在浏览器和nodejs中，同时支持promise和回调的方式调用api接口。
+### &#x270D;&#xFE0F; 封装过程
+直接判断表单数据是否是FormData，是的话就设置请求头为`multipart/form-data`,不是的话就设置成`application/json`;
+```javascript
+if (window.fetch && method === 'fetch') {
+        let requestConfig = {
+            credentials: 'include',
+            method: type,
+            headers: {
+                'Accept': 'application/json',
+            },
+            mode: 'cors',
+            cache: 'force-cache'
+        }
+
+        if (type === 'POST') {
+            if (data instanceof FormData) {
+                //如果请求体是FormData对象，则设置请求头为multipart/form-data
+                requestConfig.headers['Content-Type'] = 'multipart/form-data';
+                requestConfig.body = data;
+            } else {
+                requestConfig.headers['Content-Type'] = 'application/json';
+                requestConfig.body = JSON.stringify(data);
+            }
+        }
+    }else{
+        //...省略部分代码
+    }
 ```
