@@ -152,11 +152,43 @@ export const shopList = (
 export const getRestaurants = data => fetch('/shopping/restaurants', data);
 
 /**
+ * 获取特定餐馆详情
+ */
+
+export const getRestaurantDetail = restaurant_id => fetch("/shopping/restaurant/" + restaurant_id);
+
+/**
+ * 获取餐馆数量
+ */
+
+export const getRestaurantCount = () => fetch("/shopping/restaurants/count");
+
+/**
+ * 
+ * 删除餐馆
+ */
+
+export const deleteRestaurant = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id, {}, 'DELETE');
+
+/**
  * 获取食品种类
  */
 
-export const foodCategory=()=>fetch('/shopping/v2/restaurant/category');
+export const foodCategory = () => fetch('/shopping/v2/restaurant/category');
 
+/**
+ * 
+ * 获取当前店铺食品种类
+ */
+
+export const getCategory = restaurant_id => fetch("/shopping/getCategory/" + restaurant_id);
+
+/**
+ * 
+ * 添加食品种类
+ */
+
+export const addCategory = data => fetch()
 
 /**
  * 搜索关键字数据量
