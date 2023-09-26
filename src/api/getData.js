@@ -164,6 +164,22 @@ export const getRestaurantDetail = restaurant_id => fetch("/shopping/restaurant/
 export const getRestaurantCount = () => fetch("/shopping/restaurants/count");
 
 /**
+ * 更新店铺
+ */
+export const updataShop = data => fetch("/shopping/updatashop", data, "POST");
+
+/**
+ * 搜索店铺
+ */
+export const searchShop = word => fetch("/shopping/restaurants/searchshop", { word });
+
+/**
+ * 通过店铺名称获取店铺详情
+ */
+
+export const getRestaurantNameDetail = name => fetch("/shopping/restaurants/getrestaurantnamedetail", { name });
+
+/**
  * 
  * 删除餐馆
  */
