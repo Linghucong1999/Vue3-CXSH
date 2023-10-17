@@ -204,7 +204,13 @@ export const getCategory = restaurant_id => fetch("/shopping/getCategory/" + res
  * 添加食品种类
  */
 
-export const addCategory = data => fetch()
+export const addCategory = data => fetch("/shopping/addcategory", data, "POST");
+
+/**
+ * 添加食品
+ */
+
+export const addFood = data => fetch("/shopping/addfood", data, 'POST');
 
 /**
  * 搜索关键字数据量
