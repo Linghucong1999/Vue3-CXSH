@@ -207,26 +207,12 @@ export default {
   created() {
     this.initData();
   },
-  setup() {
-    // const vm = getCurrentInstance().proxy;
-    // watch(
-    //   () => vm.tableData,
-    //   (newValue, oldValue) => {
-    //     console.log("我也不知道");
-    //   },
-    //   { deep: true }
-    // );
-    // return {
-    //   vm,
-    // };
-  },
   methods: {
     //数据初始化
     async initData() {
       try {
         //默认guess 火爆城市hot
         this.city = await cityGuess("guess");
-
         const countData = await getRestaurantCount();
         if (countData.status === 1) {
           this.count = countData.count;

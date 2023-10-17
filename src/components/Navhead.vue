@@ -98,7 +98,7 @@ export default {
     },
     async getAdminDatas() {
       const res = await getAdminInfo();
-      if (!res.data) {
+      if (res.status===0) {
         this.$message({
           type: "error",
           message: "获取用户信息失败，请重新登录！",
