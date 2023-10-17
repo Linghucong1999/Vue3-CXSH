@@ -21,7 +21,8 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
                 'Accept': 'application/json',
             },
             mode: 'cors',
-            cache: 'force-cache'
+            // cache: 'force-cache',
+            cache:'default',
         }
 
         if (type === 'POST') {
