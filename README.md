@@ -13,6 +13,8 @@
   - [🍎 对原生的Fetch封装成类axios](#-对原生的fetch封装成类axios)
     - [⚡️ axios简介](#️-axios简介)
     - [✍️ 封装过程](#️-封装过程)
+  - [⚡️强制缓存的坑](#️强制缓存的坑)
+    - [✍️ 解决方案](#️-解决方案)
 
 # vue3-elm-admin
 
@@ -142,3 +144,23 @@ if (window.fetch && method === 'fetch') {
         //...省略部分代码
     }
 ```
+
+## &#x26A1;&#xFE0F;强制缓存的坑
+本来封装好的fetch，在请求头设置`cache: 'force-cache'`，结果发现，强缓浏览器会选择本地缓存进行请求，而不是发出请求，导致一些新数据会无法及时更新到当前页面；
+### &#x270D;&#xFE0F; 解决方案
+在请求头设置`cache: 'default'`，这样fetch会根据浏览器的缓存机制判断当前的网页是否进行缓存；
+```javascript
+if (window.fetch && method === 'fetch') {
+        let requestConfig = {
+            credentials: 'include',
+            method: type,
+            headers: {
+                'Accept': 'application/json',
+            },
+            mode: 'cors',
+            cache: 'default'
+        }
+}
+```
+
+       
