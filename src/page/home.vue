@@ -75,6 +75,7 @@ import {
   adminCount,
   apiAllCount,
   getUserCity,
+  orderCount,
 } from "@/api/getData.js";
 import { compareArr, thousandFormat, wrapperNumber } from "@/utils/common.js";
 
@@ -228,6 +229,7 @@ export default {
       Promise.all([
         userCount(today),
         adminDayCount(today),
+        orderCount(today),
         apiCount(today),
         getUserCount(),
         adminCount(),
@@ -236,10 +238,11 @@ export default {
         .then((res) => {
           this.userCount = res[0].count;
           this.adminCount = res[1].count;
-          this.apiCount = res[2].count;
-          this.allUserCount = wrapperNumber(res[3], "count");
-          this.allAdminCount = wrapperNumber(res[4], "count");
-          this.allApiCount = wrapperNumber(res[5], "count");
+          this.orderCount=res[2].count;
+          this.apiCount = res[3].count;
+          this.allUserCount = wrapperNumber(res[4], "count");
+          this.allAdminCount = wrapperNumber(res[5], "count");
+          this.allApiCount = wrapperNumber(res[6], "count");
         })
         .catch((err) => {
           console.log(err);
@@ -258,7 +261,7 @@ export default {
       this.sevenDay.forEach((item) => {
         apiArr[0].push(userCount(item));
         apiArr[1].push(adminDayCount(item));
-        // apiArr[2].push();订单模型
+        apiArr[2].push(orderCount(item));//订单模型
       });
 
       const promiseArr = [...apiArr[0], ...apiArr[1], ...apiArr[2]];
@@ -291,7 +294,7 @@ export default {
         apiArr[0].push(userCount(item));
         apiArr[1].push(adminDayCount(item));
         apiArr[2].push(apiCount(item));
-        // apiArr[3].push() //订单模型
+        apiArr[3].push(orderCount(item)) //订单模型
       });
 
       const promiseArr = [
