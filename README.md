@@ -15,6 +15,7 @@
     - [✍️ 封装过程](#️-封装过程)
   - [⚡️强制缓存的坑](#️强制缓存的坑)
     - [✍️ 解决方案](#️-解决方案)
+  - [✍️心血来潮，小写一个防抖函数](#️心血来潮小写一个防抖函数)
 
 # vue3-elm-admin
 
@@ -161,6 +162,28 @@ if (window.fetch && method === 'fetch') {
             cache: 'default'
         }
 }
+```
+## &#x270D;&#xFE0F;心血来潮，小写一个防抖函数
+
+```JavaScript
+async querySearch(queryString, cb) {
+      clearTimeout(this.timer); //清除计时器
+      if (queryString) {  //搜索字段
+        this.timer = setTimeout(async () => { //创建计时器
+          let res = await searchFood(queryString);  //向服务器发送请求
+          if (res.foodname instanceof Array) {
+            res.foodname.forEach((item) => {
+              item.value = item.name;
+              return item;
+            });
+            cb(res.foodname);
+          } else {
+            res.foodname.value = "搜索失败";
+            cb(res.foodname);
+          }
+        }, 500);  //定500ms
+      }
+    },
 ```
 
        
