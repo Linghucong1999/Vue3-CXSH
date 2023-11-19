@@ -187,7 +187,7 @@ export const getRestaurantNameDetail = name => fetch("/shopping/restaurants/getr
 export const deleteRestaurant = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id, {}, 'DELETE');
 
 /**
- * 获取食品种类
+ * 获取店铺种类
  */
 
 export const foodCategory = () => fetch('/shopping/v2/restaurant/category');
@@ -211,6 +211,51 @@ export const addCategory = data => fetch("/shopping/addcategory", data, "POST");
  */
 
 export const addFood = data => fetch("/shopping/addfood", data, 'POST');
+
+/**
+ * 
+ * 搜索食品
+ */
+
+export const searchFood = word => fetch("/shopping/food/searchfood", { word });
+
+/**
+ * 获取特定餐馆食品信息
+ */
+
+export const getFoods = data => fetch('/shopping/v2/getfoods', data);
+
+/** 
+ * 获取食品数量
+*/
+
+export const getFoodCount = data => fetch('/shopping/v2/foods/count', data);
+
+
+/** 
+ * 获取Menu详情
+*/
+export const getMenuDetail = category_id => fetch('/shopping/v2/menu/' + category_id);
+
+/** 
+ * 获取menu中有foods的列表
+*/
+
+export const getMenu = data => fetch('/shopping/v2/menu', data);
+
+
+/**
+ * 删除食品数据
+ */
+
+export const deleteFood = food_id => fetch('/shopping/v2/food/' + food_id, {}, 'DELETE');
+
+
+/**
+ * 更新食品
+ */
+
+export const updataFood=data=>fetch('/shopping/v2/updatafood',data,'POST');
 
 /**
  * 搜索关键字数据量
