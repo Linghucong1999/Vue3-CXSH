@@ -438,8 +438,8 @@ export default {
   }
 }
 
-.table_container{
-    padding: 20px;
+.table_container {
+  padding: 20px;
 }
 
 .demo-table-expand {
@@ -448,16 +448,14 @@ export default {
 
 
 .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    // margin-left:20px;
-    width: 50%;
+  margin-right: 0;
+  margin-bottom: 0;
+  // margin-left:20px;
+  width: 50%;
 }
 
 .avatar-img {
   margin-left: 20px;
   display: inline-block;
 }
-
-
 </style>
