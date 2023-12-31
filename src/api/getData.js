@@ -89,10 +89,41 @@ export const getUserList = data => fetch('/v1/users/list', data);
 export const conditionGetUser = data => fetch('/v1/user/condition/userlist', data);
 
 /**
+ * 通过用户ID获取用户详情
+ */
+
+export const getUserInfo = user_id => fetch('/v1/user/' + user_id);
+
+
+/**
+ * 获取地址信息
+ */
+export const getAddressById = address_id => fetch('/v1/address/' + address_id);
+
+/**
  * 某一天订单数量
  */
 
 export const orderCount = data => fetch('/statis/order/' + data + '/count');
+
+/**
+ * 获取特定店铺订单数量
+ */
+
+export const getOrderCount = data => fetch('/bos/orders/count', data);
+
+/**
+ * 
+ *获取特定店铺订单
+ */
+export const getOrderList = data => fetch('/bos/orders', data);
+
+/**
+ * 
+ *搜索指定订单id获取相关订单详情
+ */
+export const findOrderIdList = data => fetch('/bos/orders/keywords', data);
+
 
 /**
  * 添加商铺
@@ -255,7 +286,7 @@ export const deleteFood = food_id => fetch('/shopping/v2/food/' + food_id, {}, '
  * 更新食品
  */
 
-export const updataFood=data=>fetch('/shopping/v2/updatafood',data,'POST');
+export const updataFood = data => fetch('/shopping/v2/updatafood', data, 'POST');
 
 /**
  * 搜索关键字数据量
