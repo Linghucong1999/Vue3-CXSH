@@ -1,7 +1,8 @@
 import env from './env.js';
 export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
     type = type.toUpperCase();
-    url = env.baseUrl + url;
+    url = url.startsWith('https') || url.startsWith('http') ? url : env.baseUrl + url
+    // url = env.baseUrl + url;
     if (type === 'GET') {
         let dataStr = ''; //数据拼接
         Object.keys(data).forEach(key => {
@@ -22,7 +23,7 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
             },
             mode: 'cors',
             // cache: 'force-cache',
-            cache:'default',
+            cache: 'default',
         }
 
         if (type === 'POST') {
