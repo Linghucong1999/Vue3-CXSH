@@ -17,6 +17,7 @@ app.use(store)
 app.use(ElementPlus)
 // app.use(echarts)
 app.component('v-chart', VueEcharts)
+app.config.globalProperties.$echarts = echarts
+
 
 app.mount('#app')
-app.config.globalProperties.$echarts = echarts
